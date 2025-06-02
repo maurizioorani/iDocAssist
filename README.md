@@ -3,7 +3,7 @@
 ![version](https://img.shields.io/badge/version-1.0.0-blue.svg)
 ![license](https://img.shields.io/badge/license-MIT-green.svg)
 
-DocAssist is a powerful document processing system designed to automate invoice data extraction and analysis. It combines OCR (Optical Character Recognition) technology with AI-powered data extraction to transform invoice documents into structured data and generate comprehensive Excel reports.
+DocAssist is a powerful and secure document processing system designed to automate invoice data extraction and analysis. It combines OCR (Optical Character Recognition) technology with local AI-powered data extraction to transform invoice documents into structured data and generate comprehensive Excel reports, all while maintaining strict data privacy through 100% local processing.
 
 ## 🚀 Features
 
@@ -17,6 +17,8 @@ DocAssist is a powerful document processing system designed to automate invoice 
   - Include summary statistics with totals, vendor breakdowns, and currency distribution
 - **RESTful API**: Simple interface for integration with other systems
 - **Batch Processing**: Process multiple invoices in a single request
+- **Local Processing & Security**: All data is processed locally without sending sensitive information to external services
+- **Persistent Storage**: Optional database integration for document archiving and retrieval
 
 ## 📋 Requirements
 
@@ -24,7 +26,10 @@ DocAssist is a powerful document processing system designed to automate invoice 
 - Maven 3.6 or higher
 - Tesseract OCR (with English and Italian language packs)
 - Ollama (for AI-powered extraction)
+- PostgreSQL database (for document storage)
 - Docker (optional, for containerized deployment)
+
+For detailed database setup instructions, please refer to the [DATABASE_README.md](DATABASE_README.md) file.
 
 ## 🛠️ Installation
 
@@ -162,6 +167,18 @@ The `test_batches` directory contains several batch scripts to test different as
 - `test-file-uploads.bat`: Test file upload functionality
 - `test-batch-excel.bat`: Test batch Excel generation with multiple invoices
 - `test-excel-generation.bat`: Test Excel generation for individual invoices
+
+## 🔒 Security & Data Privacy
+
+DocAssist is designed with data privacy and security in mind:
+
+- **100% Local Processing**: All document processing occurs locally on your machine
+- **No External API Dependencies**: Invoice data is never sent to external cloud services
+- **On-premises AI**: Uses Ollama for local LLM execution without internet connectivity requirements
+- **Data Persistence**: Optional database storage is self-hosted and can be configured with authentication
+- **No Internet Required**: Once installed, the application can run in airgapped environments
+
+For database security settings and configuration, please refer to the [DATABASE_README.md](DATABASE_README.md) file.
 
 ## 📝 Example Output
 
