@@ -52,6 +52,7 @@ public interface InvoiceExtractionAssistant {
         6. Include any processing notes about extraction confidence or issues
         7. DO NOT include any text outside the JSON response
         8. Handle both Italian terms (fattura, P.IVA, imponibile, etc.) and English terms
+        9. Ensure the description of goods/services is grammatically correct and well-written
         """)
     @UserMessage("Extract invoice data from this text: {{text}}")
     InvoiceData extractInvoiceData(String text);

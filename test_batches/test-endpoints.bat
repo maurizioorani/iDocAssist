@@ -37,49 +37,49 @@ echo.
 
 echo Testing OCR-only endpoint with PNG invoice:
 curl -X POST http://localhost:8080/api/invoice/ocr-only ^
-  -F "file=@invoice_test/fattura-proforma-fac-simile-it-netto-750px.png" ^
+  -F "file=@../invoice_test/fattura-proforma-fac-simile-it-netto-750px.png" ^
   -F "language=ita"
 echo.
 echo.
 
 echo Testing OCR-only endpoint with mono PNG invoice:
 curl -X POST http://localhost:8080/api/invoice/ocr-only ^
-  -F "file=@invoice_test/modello-fattura-it-mono-nero-750px.png" ^
+  -F "file=@../invoice_test/modello-fattura-it-mono-nero-750px.png" ^
   -F "language=ita"
 echo.
 echo.
 
 echo Testing OCR-only endpoint with US flag PNG invoice:
 curl -X POST http://localhost:8080/api/invoice/ocr-only ^
-  -F "file=@invoice_test/modello-fattura-it-bandiera-stati-uniti-750px.png" ^
+  -F "file=@../invoice_test/modello-fattura-it-bandiera-stati-uniti-750px.png" ^
   -F "language=ita"
 echo.
 echo.
 
 echo Testing OCR-only endpoint with PDF invoice:
 curl -X POST http://localhost:8080/api/invoice/ocr-only ^
-  -F "file=@invoice_test/modello_fattura.pdf" ^
+  -F "file=@../invoice_test/modello_fattura.pdf" ^
   -F "language=ita"
 echo.
 echo.
 
 echo Testing full invoice processing with PNG file:
 curl -X POST http://localhost:8080/api/invoice/process ^
-  -F "file=@invoice_test/fattura-proforma-fac-simile-it-netto-750px.png" ^
+  -F "file=@../invoice_test/fattura-proforma-fac-simile-it-netto-750px.png" ^
   -F "language=ita"
 echo.
 echo.
 
 echo Testing Excel generation with PNG file:
 curl -X POST http://localhost:8080/api/invoice/process-to-excel ^
-  -F "file=@invoice_test/fattura-proforma-fac-simile-it-netto-750px.png" ^
+  -F "file=@../invoice_test/fattura-proforma-fac-simile-it-netto-750px.png" ^
   -F "language=ita"
 echo.
 echo.
 
 echo Testing full invoice processing with PDF file:
 curl -X POST http://localhost:8080/api/invoice/process ^
-  -F "file=@invoice_test/modello_fattura.pdf" ^
+  -F "file=@../invoice_test/modello_fattura.pdf" ^
   -F "language=ita"
 echo.
 echo.

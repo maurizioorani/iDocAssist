@@ -29,9 +29,9 @@ echo.
 
 echo Step 3: Ready to start application!
 echo Run the following command to start:
-echo    mvnw.cmd spring-boot:run
+echo    cd .. && mvnw.cmd spring-boot:run
 echo.
-echo Or double-click start-app.bat
+echo Or double-click ..\start-app.bat
 echo.
 
 pause

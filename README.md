@@ -31,8 +31,7 @@ DocAssist is a powerful document processing system designed to automate invoice 
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/docassist.git
-cd docassist
+git clone https://github.com/maurizioorani/iDocAssist.git
 ```
 
 ### 2. Install Tesseract OCR
@@ -191,14 +190,10 @@ The application generates Excel files with the following structure:
    - Vendor Breakdown (count and amount by vendor)
    - Currency Breakdown (count by currency)
 
-## 📄 License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
 ## 🤝 Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## 📧 Contact
 
-For questions or support, please contact [your-email@example.com]
+For questions or support, please contact [orani.maurizio@gmail.com]
