@@ -81,6 +81,14 @@ app.ollama.model-name=mistral
 
 # Output Directory
 app.output.directory=output
+
+# PostgreSQL Database Settings
+spring.datasource.url=jdbc:postgresql://localhost:5432/docassist
+spring.datasource.username=postgres
+spring.datasource.password=yourStrongPassword
+spring.datasource.driver-class-name=org.postgresql.Driver
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
 ```
 
 ### 5. Build the Application

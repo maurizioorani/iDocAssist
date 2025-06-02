@@ -114,3 +114,30 @@ To completely reset the database:
 docker-compose down -v
 docker-compose up -d
 ```
+
+## Application Configuration
+
+To configure the application to use PostgreSQL, update your `src/main/resources/application.properties` file with the following settings:
+
+```properties
+# PostgreSQL Database Configuration
+spring.datasource.url=jdbc:postgresql://localhost:5432/docassist
+spring.datasource.username=postgres
+spring.datasource.password=postgres
+spring.datasource.driver-class-name=org.postgresql.Driver
+
+# JPA/Hibernate Configuration
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
+spring.jpa.show-sql=false
+spring.jpa.properties.hibernate.format_sql=true
+
+# Comment out or remove H2 configuration if present
+# spring.datasource.url=jdbc:h2:mem:testdb
+# spring.datasource.driver-class-name=org.h2.Driver
+# spring.datasource.username=sa
+# spring.datasource.password=password
+# spring.h2.console.enabled=true
+```
+
+For development purposes, you can switch between H2 and PostgreSQL by commenting/uncommenting the respective sections.
