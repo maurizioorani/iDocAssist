@@ -1,0 +1,16 @@
+com\marsk\docassist\model\InvoiceData.class
+com\marsk\docassist\service\OcrService.class
+com\marsk\docassist\service\OllamaService$InvoiceExtractionException.class
+com\marsk\docassist\controller\SimpleTestController.class
+com\marsk\docassist\service\OllamaService.class
+com\marsk\docassist\config\OllamaConfig.class
+com\marsk\docassist\service\EmbeddingService.class
+com\marsk\docassist\service\ExcelService$ExcelExportException.class
+com\marsk\docassist\repository\OcrTextDocumentRepository.class
+com\marsk\docassist\config\EmbeddingConfig.class
+com\marsk\docassist\controller\InvoiceController.class
+com\marsk\docassist\InvoiceExtractionAssistant.class
+com\marsk\docassist\model\OcrTextDocument.class
+com\marsk\docassist\DocassistApplication.class
+com\marsk\docassist\service\OllamaService$InvoiceExtractionResult.class
+com\marsk\docassist\service\ExcelService.class
