@@ -6,6 +6,8 @@ com\marsk\docassist\service\OllamaService.class
 com\marsk\docassist\config\OllamaConfig.class
 com\marsk\docassist\service\EmbeddingService.class
 com\marsk\docassist\service\ExcelService$ExcelExportException.class
+com\marsk\docassist\config\WebConfig.class
+com\marsk\docassist\util\ImagePreprocessor.class
 com\marsk\docassist\repository\OcrTextDocumentRepository.class
 com\marsk\docassist\config\EmbeddingConfig.class
 com\marsk\docassist\controller\InvoiceController.class

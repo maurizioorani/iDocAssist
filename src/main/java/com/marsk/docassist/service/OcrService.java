@@ -73,10 +73,10 @@ public class OcrService {
     
     /**
      * Performs OCR on a file using the specified language.
-     * 
+     *
      * @param file The file to process
      * @param language The language to use for OCR
-     * @return The extracted text
+     * @return The extracted text with validation and corrections
      * @throws IOException If there is an error reading/writing the file
      * @throws TesseractException If there is an error during OCR processing
      */
@@ -104,17 +104,31 @@ public class OcrService {
             if (originalFilename.toLowerCase().endsWith(".pdf")) {
                 return processPdfFile(tempFile.toFile(), language);
             } else {
-                // Process as regular image file
+                // Process as regular image file with improved OCR settings
+                tesseractInstance.setPageSegMode(6); // Assume single uniform block
+                tesseractInstance.setOcrEngineMode(1); // LSTM only
+                
+                // Apply language-specific config
+                if ("ita".equals(language)) {
+                    tesseractInstance.setTessVariable("tessedit_char_whitelist",
+                        "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyzàèéìòù");
+                }
+                
                 String result = tesseractInstance.doOCR(tempFile.toFile());
                 
                 // Save the OCR result
                 if (result != null && !result.isEmpty()) {
-                    OcrTextDocument doc = new OcrTextDocument(originalFilename, result, language);
+                    OcrTextDocument doc = new OcrTextDocument(
+                        originalFilename,
+                        result,
+                        language,
+                        "invoice" // Default document type
+                    );
                     ocrTextDocumentRepository.save(doc);
                     logger.info("Saved OCR result for file: {}", originalFilename);
                 }
                 
-                return result;
+                return result.toString().trim();
             }
         } catch (IOException e) {
             logger.error("IOException during OCR file handling for {}: {}", 

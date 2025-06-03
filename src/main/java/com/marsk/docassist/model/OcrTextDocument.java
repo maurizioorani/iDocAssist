@@ -29,16 +29,6 @@ public class OcrTextDocument {
     @NotBlank(message = "Extracted text cannot be blank")
     private String extractedText;
     
-    @Lob // For potentially large enhanced text content
-    @Column(columnDefinition = "TEXT")
-    private String enhancedText;
-    
-    @Column
-    private Boolean isEnhanced = false;
-    
-    @Column
-    private String enhancementModel;
-    
     @Column
     private String documentType;
 
@@ -63,15 +53,12 @@ public class OcrTextDocument {
         this.languageUsed = languageUsed;
     }
     
-    public OcrTextDocument(String originalFilename, String extractedText, String enhancedText, 
-                          String languageUsed, String enhancementModel, String documentType) {
+    public OcrTextDocument(String originalFilename, String extractedText, 
+                          String languageUsed, String documentType) {
         this.originalFilename = originalFilename;
         this.extractedText = extractedText;
-        this.enhancedText = enhancedText;
         this.languageUsed = languageUsed;
-        this.enhancementModel = enhancementModel;
         this.documentType = documentType;
-        this.isEnhanced = enhancedText != null && !enhancedText.isEmpty();
     }
 
     // Getters and Setters
@@ -98,31 +85,7 @@ public class OcrTextDocument {
     public void setExtractedText(String extractedText) {
         this.extractedText = extractedText;
     }
-    
-    public String getEnhancedText() {
-        return enhancedText;
-    }
 
-    public void setEnhancedText(String enhancedText) {
-        this.enhancedText = enhancedText;
-    }
-    
-    public Boolean getIsEnhanced() {
-        return isEnhanced;
-    }
-
-    public void setIsEnhanced(Boolean isEnhanced) {
-        this.isEnhanced = isEnhanced;
-    }
-    
-    public String getEnhancementModel() {
-        return enhancementModel;
-    }
-
-    public void setEnhancementModel(String enhancementModel) {
-        this.enhancementModel = enhancementModel;
-    }
-    
     public String getDocumentType() {
         return documentType;
     }

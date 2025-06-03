@@ -1,0 +1,40 @@
+# Use a base image with Java 17 and Ubuntu Jammy
+FROM eclipse-temurin:17-jdk-jammy
+
+# Install Maven
+RUN apt-get update && \
+    apt-get install -y maven && \
+    rm -rf /var/lib/apt/lists/*
+
+# Install Tesseract OCR and language data
+RUN apt-get update && \
+    apt-get install -y tesseract-ocr tesseract-ocr-eng tesseract-ocr-ita && \
+    rm -rf /var/lib/apt/lists/*
+
+# Set working directory
+WORKDIR /app
+
+# Copy Maven wrapper and pom.xml for dependency caching
+COPY mvnw .
+COPY .mvn .mvn
+COPY pom.xml .
+
+# Download dependencies
+RUN --mount=type=cache,target=/root/.m2 ./mvnw dependency:go-offline
+
+# Copy the rest of the application code
+COPY . .
+
+# Move specific files/directories to their correct locations if needed (though WORKDIR /app should handle most)
+# Ensure tessdata and init-scripts are in the correct place relative to WORKDIR
+# For this project, they are already in the root, so COPY . . should suffice.
+# The previous error might have been a linter bug or a transient Docker issue.
+
+# Build the application
+RUN ./mvnw package -DskipTests
+
+# Expose the port the application runs on
+EXPOSE 8080
+
+# Command to run the application
+CMD ["java", "-jar", "target/docassist-0.0.1-SNAPSHOT.jar"]

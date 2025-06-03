@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
  */
 @RestController
 @RequestMapping("/api/invoice")
-@CrossOrigin(origins = "*") // Allow frontend to access the API
+// @CrossOrigin(origins = "*") // CORS is now configured globally in WebConfig.java
 public class InvoiceController {
     private static final Logger logger = LoggerFactory.getLogger(InvoiceController.class);
     
@@ -346,11 +346,25 @@ public class InvoiceController {
         endpoints.put("POST /api/invoice/process", "Process invoice from uploaded file");
         endpoints.put("POST /api/invoice/process-to-excel", "Process invoice and generate Excel file");
         endpoints.put("POST /api/invoice/ocr-only", "Extract text using OCR only");
+        endpoints.put("GET /api/invoice/history", "Get recent invoice processing history");
         
         response.put("endpoints", endpoints);
         response.put("timestamp", java.time.Instant.now().toString());
         
         return ResponseEntity.ok(response);
+    }
+
+    /**
+     * Returns a list of recent invoice processing history.
+     * Currently returns an empty list as a placeholder.
+     *
+     * @return JSON response with a list of recent invoices
+     */
+    @GetMapping("/history")
+    public ResponseEntity<List<InvoiceData>> getInvoiceHistory() {
+        logger.info("Fetching recent invoice history (placeholder)");
+        // In a real application, you would fetch this from a database or persistent storage
+        return ResponseEntity.ok(new ArrayList<>());
     }
 
     /**

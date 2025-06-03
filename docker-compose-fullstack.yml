@@ -1,0 +1,92 @@
+version: '3.8'
+
+services:
+  # PostgreSQL database with PGVector extension for vector similarity search
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: docassist-postgres
+    environment:
+      POSTGRES_DB: docassist
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      PGDATA: /var/lib/postgresql/data/pgdata
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-scripts:/docker-entrypoint-initdb.d
+    networks:
+      - docassist-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d docassist"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Ollama service for AI models
+  ollama:
+    image: ollama/ollama:latest
+    container_name: docassist-ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    networks:
+      - docassist-network
+    restart: unless-stopped
+    command: serve # Ensure Ollama serves models
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:11434"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+
+  # Backend Spring Boot application
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    container_name: docassist-backend
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/docassist
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      OLLAMA_BASE_URL: http://ollama:11434
+      OLLAMA_MODEL_NAME: llama3.2
+    depends_on:
+      postgres:
+        condition: service_healthy
+      ollama:
+        condition: service_healthy
+    networks:
+      - docassist-network
+    restart: unless-stopped
+
+  # Frontend Vue.js application
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.frontend
+    container_name: docassist-frontend
+    ports:
+      - "5173:5173"
+    environment:
+      VITE_API_BASE_URL: http://localhost:8080/api # Frontend connects to backend via host machine's localhost
+    depends_on:
+      backend:
+        condition: service_started # Frontend doesn't need backend to be healthy, just started
+    networks:
+      - docassist-network
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  ollama_data:
+
+networks:
+  docassist-network:
+    driver: bridge

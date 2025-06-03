@@ -7,115 +7,172 @@ DocAssist is a powerful and secure document processing system designed to automa
 
 ## 🚀 Features
 
-- **Intelligent Document Processing**: Extract text from invoices using OCR technology
-- **AI-Powered Data Extraction**: Utilize Large Language Models to extract structured data from invoices
-- **Multi-Format Support**: Process PDF and image-based invoice files (PNG, JPG)
-- **Multi-Language Support**: Process documents in English and Italian with dedicated language models
+- **Web User Interface**: A modern and intuitive Vue.js frontend for easy interaction.
+- **Intelligent Document Processing**: Extract text from invoices using OCR technology.
+- **AI-Powered Data Extraction**: Utilize Large Language Models to extract structured data from invoices.
+- **Multi-Format Support**: Process PDF and image-based invoice files (PNG, JPG).
+- **Multi-Language Support**: Process documents in English and Italian with dedicated language models.
 - **Excel Report Generation**:
-  - Generate detailed Excel reports with extracted invoice data
-  - Create consolidated reports from multiple invoices in a single Excel file
-  - Include summary statistics with totals, vendor breakdowns, and currency distribution
-- **RESTful API**: Simple interface for integration with other systems
-- **Batch Processing**: Process multiple invoices in a single request
-- **Local Processing & Security**: All data is processed locally without sending sensitive information to external services
-- **Persistent Storage**: Optional database integration for document archiving and retrieval
+  - Generate detailed Excel reports with extracted invoice data.
+  - Create consolidated reports from multiple invoices in a single Excel file.
+  - Include summary statistics with totals, vendor breakdowns, and currency distribution.
+- **RESTful API**: Simple interface for integration with other systems.
+- **Batch Processing**: Process multiple invoices in a single request.
+- **Local Processing & Security**: All data is processed locally without sending sensitive information to external services.
+- **Persistent Storage**: Optional database integration for document archiving and retrieval.
 
 ## 📋 Requirements
 
-- Java 17 or higher
-- Maven 3.6 or higher
-- Tesseract OCR (with English and Italian language packs)
-- Ollama (for AI-powered extraction)
-- PostgreSQL database (for document storage)
-- Docker (optional, for containerized deployment)
+- Docker and Docker Compose (recommended for simplified setup)
+- Alternatively, for manual setup:
+  - Java 17 or higher
+  - Maven 3.6 or higher
+  - Tesseract OCR (with English and Italian language packs)
+  - Ollama (for AI-powered extraction)
+  - PostgreSQL database (for document storage)
+  - Node.js (for frontend development/build)
 
 For detailed database setup instructions, please refer to the [DATABASE_README.md](DATABASE_README.md) file.
 
-## 🛠️ Installation
+## 🛠️ Installation & Setup (Recommended: Docker Compose)
+
+The easiest way to get DocAssist up and running is by using Docker Compose, which will set up all necessary services (PostgreSQL, Ollama, Backend API, and Frontend UI) with a single command.
 
 ### 1. Clone the Repository
 
 ```bash
 git clone https://github.com/maurizioorani/iDocAssist.git
+cd iDocAssist
 ```
 
-### 2. Install Tesseract OCR
+### 2. Build and Run with Docker Compose
 
-#### Windows
-1. Download and install Tesseract from [UB Mannheim](https://github.com/UB-Mannheim/tesseract/wiki)
-2. Add Tesseract to your PATH
-3. Download language data files (eng.traineddata, ita.traineddata) and place them in the `tessdata` directory
-
-#### Linux
-```bash
-sudo apt-get update
-sudo apt-get install tesseract-ocr
-sudo apt-get install tesseract-ocr-eng tesseract-ocr-ita
-```
-
-### 3. Setup Ollama (for AI-powered extraction)
-
-1. Download and install [Ollama](https://ollama.ai/)
-2. Run a compatible LLM model (recommended: mistral or llama2)
-```bash
-ollama run mistral
-```
-
-### 4. Configure the Application
-
-1. Edit `src/main/resources/application.properties` to set:
-   - Tesseract OCR path
-   - Ollama API URL
-   - Preferred model
-   - Database settings (if needed)
-
-Example configuration:
-```properties
-# OCR Settings
-app.ocr.tesseract-path=/usr/bin/tesseract
-app.ocr.tessdata-path=/path/to/tessdata
-
-# Ollama Settings
-app.ollama.base-url=http://localhost:11434
-app.ollama.model-name=mistral
-
-# Output Directory
-app.output.directory=output
-
-# PostgreSQL Database Settings
-spring.datasource.url=jdbc:postgresql://localhost:5432/docassist
-spring.datasource.username=postgres
-spring.datasource.password=yourStrongPassword
-spring.datasource.driver-class-name=org.postgresql.Driver
-spring.jpa.hibernate.ddl-auto=update
-spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
-```
-
-### 5. Build the Application
+Use the provided `docker-compose-fullstack.yml` to build and start all services. This process will also pull the required Ollama model (`llama3.2`) on the first run, which might take some time depending on your internet connection.
 
 ```bash
-mvn clean package
+docker-compose -f docker-compose-fullstack.yml up --build -d
 ```
 
-## 🏃‍♂️ Running the Application
+**Note**: The first time you run this, Docker will download the Ollama image and then the `llama3.2` model. This can take a while. You can monitor the progress by checking the logs:
+```bash
+docker logs -f docassist-ollama
+```
 
-### Using Maven
+### 3. Access the Application
 
+Once all services are up and running (you can check `docker ps` to confirm), open your web browser and navigate to:
+
+```
+http://localhost:5173
+```
+
+You should see the DocAssist web interface.
+
+---
+
+## 🛠️ Manual Installation & Setup (Advanced)
+
+If you prefer to set up each component manually, follow these steps:
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/maurizioorani/iDocAssist.git
+cd iDocAssist
+```
+
+### 2. Backend Setup (Spring Boot)
+
+#### Requirements
+- Java 17 or higher
+- Maven 3.6 or higher
+- Tesseract OCR (with English and Italian language packs)
+- Ollama (for AI-powered extraction)
+- PostgreSQL database
+
+#### Steps
+1.  **Install Tesseract OCR**:
+    *   **Windows**: Download and install Tesseract from [UB Mannheim](https://github.com/UB-Mannheim/tesseract/wiki). Add Tesseract to your PATH. Download language data files (`eng.traineddata`, `ita.traineddata`) and place them in the `tessdata` directory.
+    *   **Linux**:
+        ```bash
+        sudo apt-get update
+        sudo apt-get install tesseract-ocr
+        sudo apt-get install tesseract-ocr-eng tesseract-ocr-ita
+        ```
+2.  **Setup Ollama**:
+    *   Download and install [Ollama](https://ollama.ai/).
+    *   Run the `llama3.2` model:
+        ```bash
+        ollama run llama3.2
+        ```
+3.  **PostgreSQL Database**: Ensure your PostgreSQL database is running and accessible. Refer to [DATABASE_README.md](DATABASE_README.md) for setup.
+4.  **Configure Application Properties**: Edit `src/main/resources/application.properties` to set:
+    *   Tesseract OCR path
+    *   Ollama API URL (e.g., `http://localhost:11434`)
+    *   Ollama model name (e.g., `llama3.2`)
+    *   PostgreSQL database settings (uncomment and configure `spring.datasource` properties).
+5.  **Build the Backend**:
+    ```bash
+    mvn clean package
+    ```
+6.  **Run the Backend**:
+    ```bash
+    mvn spring-boot:run
+    ```
+    The backend API will be available at `http://localhost:8080`.
+
+### 3. Frontend Setup (Vue.js)
+
+#### Requirements
+- Node.js (LTS version recommended)
+- npm or Yarn
+
+#### Steps
+1.  **Navigate to Frontend Directory**:
+    ```bash
+    cd frontend
+    ```
+2.  **Install Dependencies**:
+    ```bash
+    npm install
+    ```
+3.  **Configure API Endpoint**: The frontend is configured to connect to `http://localhost:8080/api` by default. If your backend is running on a different host or port, you might need to adjust `frontend/src/services/api.js` or set the `VITE_API_BASE_URL` environment variable.
+4.  **Run the Frontend**:
+    ```bash
+    npm run dev
+    ```
+    The frontend development server will start, usually accessible at `http://localhost:5173`.
+
+---
+
+## 🏃‍♂️ Running the Application (Manual)
+
+### Backend Only
+
+#### Using Maven
 ```bash
 mvn spring-boot:run
 ```
 
-### Using JAR File
-
+#### Using JAR File
 ```bash
 java -jar target/docassist-0.0.1-SNAPSHOT.jar
 ```
 
-### Using the Provided Batch Script
-
+#### Using the Provided Batch Script (Windows)
 ```bash
 start-app.bat
 ```
+
+### Frontend Only (after Backend is running)
+
+#### Using npm
+```bash
+cd frontend
+npm run dev
+```
+
+---
 
 ## 🔍 API Usage
 
@@ -160,6 +217,11 @@ Form params:
   - files: Multiple invoice files
   - language: OCR language (eng, ita)
   - outputPath: (optional) Custom output path
+```
+
+### Get Invoice History
+```
+GET /api/invoice/history
 ```
 
 ## 🧪 Testing
