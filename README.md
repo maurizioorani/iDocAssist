@@ -5,6 +5,10 @@
 
 DocAssist is a powerful and secure document processing system designed to automate invoice data extraction and analysis. It combines OCR (Optical Character Recognition) technology with local AI-powered data extraction to transform invoice documents into structured data and generate comprehensive Excel reports, all while maintaining strict data privacy through 100% local processing.
 
+<p align="center">
+  <img src="imgs/screen_docassist.jpg" alt="DocAssist Screenshot" width="700">
+</p>
+
 ## 🚀 Features
 
 - **Web User Interface**: A modern and intuitive Vue.js frontend for easy interaction.
