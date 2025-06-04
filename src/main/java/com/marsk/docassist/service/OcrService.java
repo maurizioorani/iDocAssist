@@ -319,8 +319,46 @@ public class OcrService {
         BufferedImageOp sharpenOp = new ConvolveOp(new Kernel(3, 3, sharpenKernel));
         processedImage = sharpenOp.filter(processedImage, null);
         
-        return processedImage;
+        return processedImage;    }
+
+    /**
+     * Saves an OCR result to the database.
+     * This method is used to persist OCR extraction results for later retrieval and analysis.
+     * 
+     * @param filename The original filename of the processed document
+     * @param extractedText The text that was extracted via OCR
+     * @param language The language used for OCR processing
+     * @return The saved OcrTextDocument entity
+     */
+    public OcrTextDocument saveOcrResult(String filename, String extractedText, String language) {
+        logger.info("Saving OCR result for file: {} with language: {}", filename, language);
+        
+        OcrTextDocument document = new OcrTextDocument(filename, extractedText, language);
+        OcrTextDocument savedDocument = ocrTextDocumentRepository.save(document);
+        
+        logger.info("Successfully saved OCR result with ID: {} for file: {}", savedDocument.getId(), filename);
+        return savedDocument;
     }
+
+    /**
+     * Saves an OCR result to the database with document type.
+     * 
+     * @param filename The original filename of the processed document
+     * @param extractedText The text that was extracted via OCR
+     * @param language The language used for OCR processing
+     * @param documentType The type of document (e.g., "invoice", "receipt", "contract")
+     * @return The saved OcrTextDocument entity
+     */
+    public OcrTextDocument saveOcrResult(String filename, String extractedText, String language, String documentType) {
+        logger.info("Saving OCR result for file: {} with language: {} and document type: {}", filename, language, documentType);
+        
+        OcrTextDocument document = new OcrTextDocument(filename, extractedText, language, documentType);
+        OcrTextDocument savedDocument = ocrTextDocumentRepository.save(document);
+        
+        logger.info("Successfully saved OCR result with ID: {} for file: {}", savedDocument.getId(), filename);
+        return savedDocument;
+    }
+
       /**
      * Configures Tesseract parameters for optimal OCR based on the current page being processed.
      * 
